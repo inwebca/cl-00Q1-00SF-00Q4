@@ -1,30 +1,47 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./utils/supabase";
 import "./App.css";
+import { Session } from "@supabase/supabase-js";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
 
 function App() {
-  const [todos, setTodos] = useState<any>([]);
+  const [session, setSession] = useState<Session | null>(null);
+
   useEffect(() => {
-    async function getTodos() {
-      const { data } = await supabase.from("todos").select();
-      if (data && data.length > 0) {
-        setTodos(data);
-      }
-    }
-
-    getTodos();
-  }, []);
-
-  const handleSignInUser = async () => {
-    await supabase.auth.signUp({
-      email: "admin@admin.com",
-      password: "123456",
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
     });
-  };
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
   };
+
+  if (!session) {
+    return (
+      <Auth
+        supabaseClient={supabase}
+        appearance={{ theme: ThemeSupa }}
+        providers={[]}
+      />
+    );
+  } else {
+    return (
+      <div>
+        <button onClick={handleSignOut}>Sign out</button>
+        Logged in!
+      </div>
+    );
+  }
 
   const getUserRole = async () => {
     try {
@@ -83,7 +100,6 @@ function App() {
       {JSON.stringify(todos)}
       <button onClick={getUserRole}>user role</button>
       <button onClick={signInUser}>SigninUser</button>
-      <button onClick={handleSignOut}>Sign out</button>
     </>
   );
 }
