@@ -1,16 +1,20 @@
 import { useAuth } from "../context/AuthContext";
-import { supabase } from "../utils/supabase";
 import LoggedLayout from "./LoggedLayout";
 import LoggedOutLayout from "./LoggedOutLayout";
+import { Outlet } from "react-router-dom";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { session } = useAuth();
+const Layout = () => {
+  const { user } = useAuth();
 
-  if (!session) {
+  if (!user) {
     return <LoggedOutLayout />;
   }
 
-  return <LoggedLayout onSignOut={() => supabase.auth.signOut()} children={children}/>;
+  return (
+    <LoggedLayout>
+      <Outlet />
+    </LoggedLayout>
+  );
 };
 
 export default Layout;

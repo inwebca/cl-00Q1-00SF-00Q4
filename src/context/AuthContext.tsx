@@ -1,30 +1,82 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../utils/supabase";
-import { Session } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 
-const AuthContext = createContext<{ session: Session | null }>({
-  session: null,
+type Role = "admin" | "user";
+
+type AuthContextType = {
+  user: User | null;
+  role: Role | null;
+  signOut: () => Promise<void>;
+};
+
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  role: null,
+  signOut: async () => {},
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<Role | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
+    supabase.auth.getSession().then(({ data }) => {
+      const currentUser = data.session?.user || null;
+      setUser(currentUser);
+
+      // Si un utilisateur est connecté, récupérer son rôle
+      if (currentUser) {
+        void fetchRole(currentUser.id);
+      }
     });
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+    const { data: subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        const currentUser = session?.user || null;
+        setUser(currentUser);
 
-    return () => subscription.unsubscribe();
+        if (currentUser) {
+          void fetchRole(currentUser.id);
+        } else {
+          setRole(null);
+        }
+      }
+    );
+
+    return () => {
+      subscription?.subscription.unsubscribe(); // Nettoyage de l'abonnement
+    };
   }, []);
 
+  const fetchRole = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId)
+        .single();
+
+      if (error) {
+        console.error("Error fetching role:", error.message);
+      } else {
+        setRole(data.role as Role);
+      }
+    } catch (err) {
+      console.error("Unexpected error fetching role:", err);
+    }
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setRole(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ session }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ role, user, signOut }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

@@ -4,13 +4,10 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { supabase } from "../utils/supabase";
+import { useAuth } from "../context/AuthContext.tsx";
 
 const Navbar = () => {
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-  };
+  const { role, signOut } = useAuth();
 
   return (
     <AppBar position="static">
@@ -25,9 +22,11 @@ const Navbar = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          App
+          {<pre>{JSON.stringify(role)}</pre>}
         </Typography>
-        <Button onClick={handleSignOut} color="inherit">Sign out</Button>
+        <Button onClick={signOut} color="inherit">
+          Sign out
+        </Button>
       </Toolbar>
     </AppBar>
   );
