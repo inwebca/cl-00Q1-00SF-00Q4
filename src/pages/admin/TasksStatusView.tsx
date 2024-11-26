@@ -18,7 +18,7 @@ const TaskStatusView = () => {
     const { data, error } = await supabase
       .from("task_status")
       .select("*")
-      .order("id", { ascending: true }); // Trier les statuts par ID
+      .order("id", { ascending: true });
     if (error) {
       console.error("Error:", error.message);
     } else {

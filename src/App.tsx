@@ -15,6 +15,7 @@ import AdminPanelView from "./pages/admin/AdminPanelView.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import DashboardView from "./pages/user/DashboardView.tsx";
 import TaskStatusView from "./pages/admin/TasksStatusView.tsx";
+import TasksView from "./pages/user/TasksView.tsx";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
 
             <Route element={<RoleBasedRoute allowedRoles={["user"]} />}>
               <Route path="dashboard" element={<DashboardView />} />
+              <Route path="tasks" element={<TasksView />} />
             </Route>
 
             <Route element={<ProtectedRoute />}>
