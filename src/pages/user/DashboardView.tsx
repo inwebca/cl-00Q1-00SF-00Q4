@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../utils/supabase";
 import CircularProgress from "@mui/material/CircularProgress";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -28,7 +28,7 @@ const DashboardView = () => {
         created_by,
         created_at,
         due_date,
-        task_status (id, name, description, created_at)
+        task_status (id, name, description)
       `
       )
       .eq("assigned_to", user?.id)
@@ -63,7 +63,7 @@ const DashboardView = () => {
       <Button variant="contained" color="primary" sx={{ mb: 2 }}>
         Add task
       </Button>
-      <TasksTable tasks={tasks} />
+      <TasksTable tasks={tasks} onTaskUpdated={fetchTasks} />
     </>
   );
 };

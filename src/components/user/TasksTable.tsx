@@ -9,12 +9,28 @@ import {
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { Task } from "../../interfaces/Task.ts";
+import { useState } from "react";
+import TaskStatusEditDialog from "./TaskStatusEditDialog.tsx";
 
 interface TasksTableProps {
   tasks: Task[];
+  onTaskUpdated: () => void;
 }
 
 const TasksTable = (props: TasksTableProps) => {
+  const [editTaskDialogOpen, setEditTaskDialogOpen] = useState(false);
+  const [currentTask, setCurrentTask] = useState<Task | null>(null);
+
+  const handleEditClick = (task: Task) => {
+    setCurrentTask(task);
+    setEditTaskDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setEditTaskDialogOpen(false);
+    setCurrentTask(null);
+  };
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -32,8 +48,12 @@ const TasksTable = (props: TasksTableProps) => {
                 <TableCell>{task.title}</TableCell>
                 <TableCell>{task.description}</TableCell>
                 <TableCell>
-                  <Button variant="contained" color="primary">
-                    Edit
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleEditClick(task)}
+                  >
+                    Edit status
                   </Button>
                 </TableCell>
               </TableRow>
@@ -41,6 +61,15 @@ const TasksTable = (props: TasksTableProps) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {currentTask && (
+        <TaskStatusEditDialog
+          open={editTaskDialogOpen}
+          onClose={handleDialogClose}
+          onTaskSaved={props.onTaskUpdated}
+          task={currentTask}
+        />
+      )}
     </>
   );
 };
