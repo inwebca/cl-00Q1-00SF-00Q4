@@ -63,6 +63,21 @@ const AdminPanelView = () => {
             </CardActions>
           </Card>
         </Grid>
+
+        <Grid size={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                Archived Tasks
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small" component={Link} to={"/archived-tasks"}>
+                View Archived Tasks
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
       </Grid>
     </>
   );

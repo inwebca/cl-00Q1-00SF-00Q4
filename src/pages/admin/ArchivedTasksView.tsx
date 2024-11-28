@@ -10,22 +10,20 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { supabase } from "../../utils/supabase.ts";
 import { useEffect, useState } from "react";
 import { Task } from "../../interfaces/Task.ts";
+import { supabase } from "../../utils/supabase.ts";
 import CircularProgress from "@mui/material/CircularProgress";
-import Button from "@mui/material/Button";
 
-const CompletedTasksView = () => {
+const ArchivedTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchCompletedTasks = async () => {
+  const fetchArchivedTasks = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from("tasks")
+      .from("archived_tasks")
       .select("*")
-      .eq("completed", true)
       .order("id", { ascending: true });
 
     if (error) {
@@ -37,18 +35,8 @@ const CompletedTasksView = () => {
   };
 
   useEffect(() => {
-    void fetchCompletedTasks();
+    void fetchArchivedTasks();
   }, []);
-
-  const handleArchiveTask = async (task: Task) => {
-    try {
-      await supabase.from("archived_tasks").insert(task);
-      await supabase.from("tasks").delete().eq("id", task.id);
-      await fetchCompletedTasks();
-    } catch (error) {
-      console.error("Error archiving task:", (error as Error).message);
-    }
-  };
 
   if (loading) {
     return <CircularProgress />;
@@ -60,11 +48,11 @@ const CompletedTasksView = () => {
         <Link to={"/admin"} color="inherit">
           Admin
         </Link>
-        <Typography sx={{ color: "text.primary" }}>Completed Tasks</Typography>
+        <Typography sx={{ color: "text.primary" }}>Archived Tasks</Typography>
       </Breadcrumbs>
 
       <Typography typography="h5" sx={{ mt: 2, mb: 2 }}>
-        Completed Tasks
+        Archived Tasks
       </Typography>
 
       <TableContainer component={Paper}>
@@ -73,7 +61,6 @@ const CompletedTasksView = () => {
             <TableRow>
               <TableCell>Title</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -81,15 +68,6 @@ const CompletedTasksView = () => {
               <TableRow key={task.id}>
                 <TableCell>{task.title}</TableCell>
                 <TableCell>{task.description}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleArchiveTask(task)}
-                  >
-                    Archive task
-                  </Button>
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -99,4 +77,4 @@ const CompletedTasksView = () => {
   );
 };
 
-export default CompletedTasksView;
+export default ArchivedTasks;

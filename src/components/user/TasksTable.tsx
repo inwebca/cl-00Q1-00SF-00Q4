@@ -70,6 +70,7 @@ const TasksTable = (props: TasksTableProps) => {
                       variant="contained"
                       color="primary"
                       onClick={() => handleEditClick(task)}
+                      disabled={task.completed ? true : false}
                     >
                       Edit status
                     </Button>
