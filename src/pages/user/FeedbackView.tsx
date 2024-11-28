@@ -34,13 +34,13 @@ const FeedbackView = () => {
         <Stack direction={"column"} gap={2}>
           <TextareaAutosizeElement
             name={"content"}
-            label={"Content"}
+            label={"Write something"}
             required
           />
+          <Button variant="contained" type="submit">
+            Send Feedback
+          </Button>
         </Stack>
-        <Button variant="contained" type="submit">
-          Send Feedback
-        </Button>
       </FormContainer>
     </>
   );

@@ -93,6 +93,21 @@ const AdminPanelView = () => {
             </CardActions>
           </Card>
         </Grid>
+
+        <Grid size={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                App Feedbacks
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small" component={Link} to={"/admin-feedback"}>
+                View App Feedbacks
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
       </Grid>
     </>
   );
