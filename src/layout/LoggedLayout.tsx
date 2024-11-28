@@ -31,12 +31,10 @@ const LoggedLayout = ({ children }: { children: ReactNode }) => {
     if (role != null) {
       if (role == "admin") {
         setNavItems([
-          { label: "home", link: "/home" },
           { label: "admin", link: "/admin" },
         ]);
       } else {
         setNavItems([
-          { label: "home", link: "/home" },
           { label: "dashboard", link: "/dashboard" },
         ]);
       }

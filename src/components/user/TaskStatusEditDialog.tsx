@@ -30,6 +30,17 @@ const TaskStatusEditDialog = (props: TaskStatusEditDialogProps) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    const res = await supabase
+      .from("tasks")
+      .update({ status_id: selectedStatusId })
+      .eq("id", props.task.id);
+
+    if (res.error) {
+      console.error("Error :", res.error.message);
+    } else {
+      props.onTaskSaved();
+      props.onClose();
+    }
   };
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -46,10 +57,7 @@ const TaskStatusEditDialog = (props: TaskStatusEditDialogProps) => {
       console.error("Error:", error.message);
     } else {
       setStatuses(data || []);
-      console.log(props.task.task_status?.id);
-      setSelectedStatusId(
-        props.task.task_status ? props.task.task_status[0].id.toString() : ""
-      );
+      setSelectedStatusId(props.task.status_id.toString());
     }
     setLoading(false);
   };
@@ -60,8 +68,7 @@ const TaskStatusEditDialog = (props: TaskStatusEditDialogProps) => {
 
   return (
     <Dialog open={props.open} onClose={props.onClose} fullWidth={true}>
-      <DialogTitle>Edit task</DialogTitle>
-
+      <DialogTitle>Edit task status</DialogTitle>
       <form onSubmit={handleSubmit}>
         {loading ? (
           <CircularProgress />

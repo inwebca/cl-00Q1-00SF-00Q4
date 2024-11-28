@@ -4,7 +4,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import Button from "@mui/material/Button";
 import TasksTable from "../../components/user/TasksTable";
 import { Task } from "../../interfaces/Task";
 import { useAuth } from "../../context/AuthContext";
@@ -18,21 +17,10 @@ const DashboardView = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("tasks")
-      .select(
-        `
-        id,
-        title,
-        description,
-        status_id,
-        assigned_to,
-        created_by,
-        created_at,
-        due_date,
-        task_status (id, name, description)
-      `
-      )
+      .select("*, task_status(*)")
       .eq("assigned_to", user?.id)
       .order("id", { ascending: true });
+
     if (error) {
       console.error("Error:", error.message);
     } else {
@@ -60,9 +48,6 @@ const DashboardView = () => {
       <Typography typography="h5" sx={{ mt: 2, mb: 2 }}>
         Manage My Tasks
       </Typography>
-      <Button variant="contained" color="primary" sx={{ mb: 2 }}>
-        Add task
-      </Button>
       <TasksTable tasks={tasks} onTaskUpdated={fetchTasks} />
     </>
   );

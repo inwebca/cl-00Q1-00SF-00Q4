@@ -17,6 +17,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +33,7 @@ const Login: React.FC = () => {
       if (error) {
         setError(error.message);
       } else {
-        navigate("/home");
+        navigate("/redirect");
       }
     } catch (err) {
       setError("Unexpected error occurred.");

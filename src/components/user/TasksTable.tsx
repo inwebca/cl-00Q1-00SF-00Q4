@@ -39,6 +39,7 @@ const TasksTable = (props: TasksTableProps) => {
             <TableRow>
               <TableCell>Title</TableCell>
               <TableCell>Description</TableCell>
+              <TableCell>Status</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -47,6 +48,7 @@ const TasksTable = (props: TasksTableProps) => {
               <TableRow key={task.id}>
                 <TableCell>{task.title}</TableCell>
                 <TableCell>{task.description}</TableCell>
+                <TableCell>{task.task_status.name}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"
