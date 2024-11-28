@@ -78,6 +78,21 @@ const AdminPanelView = () => {
             </CardActions>
           </Card>
         </Grid>
+
+        <Grid size={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                Tasks Chart
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small" component={Link} to={"/chart"}>
+                View Tasks Chart
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
       </Grid>
     </>
   );

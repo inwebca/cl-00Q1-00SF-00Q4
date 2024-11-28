@@ -15,6 +15,7 @@ import TaskStatusView from "./pages/admin/TasksStatusView.tsx";
 import TaskAssignmentView from "./pages/admin/TaskAssignmentView.tsx";
 import CompletedTasksView from "./pages/admin/CompletedTasksView.tsx";
 import ArchivedTasksView from "./pages/admin/ArchivedTasksView.tsx";
+import ChartView from "./pages/admin/ChartView.tsx";
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
               <Route path="task-assignment" element={<TaskAssignmentView />} />
               <Route path="completed-tasks" element={<CompletedTasksView />} />
               <Route path="archived-tasks" element={<ArchivedTasksView />} />
+              <Route path="chart" element={<ChartView />} />
             </Route>
 
             <Route element={<RoleBasedRoute allowedRoles={["user"]} />}>
