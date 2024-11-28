@@ -8,9 +8,11 @@ import {
   Paper,
 } from "@mui/material";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid2";
 import { Task } from "../../interfaces/Task.ts";
 import { useState } from "react";
 import TaskStatusEditDialog from "./TaskStatusEditDialog.tsx";
+import { supabase } from "../../utils/supabase.ts";
 
 interface TasksTableProps {
   tasks: Task[];
@@ -29,6 +31,19 @@ const TasksTable = (props: TasksTableProps) => {
   const handleDialogClose = () => {
     setEditTaskDialogOpen(false);
     setCurrentTask(null);
+  };
+
+  const handleSetCompleted = async (task: Task) => {
+    const result = await supabase
+      .from("tasks")
+      .update({ completed: true })
+      .eq("id", task.id);
+
+    if (result.error) {
+      console.error("Error :", result.error.message);
+    } else {
+      props.onTaskUpdated();
+    }
   };
 
   return (
@@ -50,13 +65,23 @@ const TasksTable = (props: TasksTableProps) => {
                 <TableCell>{task.description}</TableCell>
                 <TableCell>{task.task_status.name}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleEditClick(task)}
-                  >
-                    Edit status
-                  </Button>
+                  <Grid container spacing={1}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleEditClick(task)}
+                    >
+                      Edit status
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      disabled={task.completed ? true : false}
+                      onClick={() => handleSetCompleted(task)}
+                    >
+                      Mark as completed
+                    </Button>
+                  </Grid>
                 </TableCell>
               </TableRow>
             ))}

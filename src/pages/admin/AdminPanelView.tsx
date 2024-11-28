@@ -43,7 +43,22 @@ const AdminPanelView = () => {
             </CardContent>
             <CardActions>
               <Button size="small" component={Link} to={"/task-assignment"}>
-                Task Assignment
+                Manage Task Assignment
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+
+        <Grid size={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                Completed Tasks
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small" component={Link} to={"/completed-tasks"}>
+                Manage Completed Tasks
               </Button>
             </CardActions>
           </Card>

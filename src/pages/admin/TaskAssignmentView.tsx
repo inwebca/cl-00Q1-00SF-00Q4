@@ -50,6 +50,10 @@ const TaskAssignmentView = () => {
         <Typography sx={{ color: "text.primary" }}>Task Assignment</Typography>
       </Breadcrumbs>
 
+      <Typography typography="h5" sx={{ mt: 2, mb: 2 }}>
+        Task Assignement
+      </Typography>
+
       <Button
         variant="contained"
         color="primary"
