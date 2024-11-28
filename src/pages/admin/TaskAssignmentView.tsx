@@ -19,12 +19,12 @@ const TaskAssignmentView = () => {
     const { data, error } = await supabase
       .from("tasks")
       .select("*, task_status(*), user: users(*)")
+      .eq("completed", false)
       .order("id", { ascending: true });
 
     if (error) {
       console.error("Error:", error.message);
     } else {
-      console.log(data);
       setAllTasks(data || []);
     }
     setLoading(false);
@@ -62,7 +62,7 @@ const TaskAssignmentView = () => {
       <TaskDialog
         open={dialogOpen}
         onClose={handleDialogClose}
-        onStatusSaved={fetchAllTasks}
+        onTaskSaved={fetchAllTasks}
       ></TaskDialog>
     </>
   );

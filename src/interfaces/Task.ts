@@ -9,6 +9,7 @@ export interface Task {
   due_date: string | null;
   status_id: number;
   task_status: TaskStatus;
-  assigned_to: number | null;
+  assigned_to: string | null;
   user: User | null;
+  completed: boolean;
 }
