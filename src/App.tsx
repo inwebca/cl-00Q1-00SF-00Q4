@@ -16,6 +16,7 @@ import TaskAssignmentView from "./pages/admin/TaskAssignmentView.tsx";
 import CompletedTasksView from "./pages/admin/CompletedTasksView.tsx";
 import ArchivedTasksView from "./pages/admin/ArchivedTasksView.tsx";
 import ChartView from "./pages/admin/ChartView.tsx";
+import FeedbackView from "./pages/user/FeedbackView.tsx";
 
 export default function App() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
 
             <Route element={<RoleBasedRoute allowedRoles={["user"]} />}>
               <Route path="dashboard" element={<DashboardView />} />
+              <Route path="feedback" element={<FeedbackView />} />
             </Route>
 
             <Route index element={<Navigate to="/login" />} />

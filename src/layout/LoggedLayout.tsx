@@ -30,12 +30,11 @@ const LoggedLayout = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (role != null) {
       if (role == "admin") {
-        setNavItems([
-          { label: "admin", link: "/admin" },
-        ]);
+        setNavItems([{ label: "admin", link: "/admin" }]);
       } else {
         setNavItems([
           { label: "dashboard", link: "/dashboard" },
+          { label: "feedback", link: "/feedback" },
         ]);
       }
     }
