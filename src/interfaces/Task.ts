@@ -1,13 +1,14 @@
 import { TaskStatus } from "./TaskStatus";
+import { User } from "./User.ts";
 
 export interface Task {
   id: number;
   title: string;
-  description: string | null;
-  status_id: number;
-  assigned_to: string | null;
-  created_by: string;
+  description: string;
   created_at: string;
   due_date: string | null;
+  status_id: number;
   task_status: TaskStatus;
+  assigned_to: number | null;
+  user: User | null;
 }
