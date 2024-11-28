@@ -1,4 +1,3 @@
-import "./App.css";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./layout/Layout.tsx";
 import {
@@ -17,7 +16,6 @@ import TaskAssignmentView from "./pages/admin/TaskAssignmentView.tsx";
 import CompletedTasksView from "./pages/admin/CompletedTasksView.tsx";
 import ArchivedTasksView from "./pages/admin/ArchivedTasksView.tsx";
 
-// @ts-ignore
 export default function App() {
   return (
     <AuthProvider>
